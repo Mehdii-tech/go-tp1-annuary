@@ -7,7 +7,9 @@ import (
 func setupTest(t *testing.T) *ContactStore {
 	t.Helper()
 	store := NewKVStore()
-	store.Reset()
+	if err := store.Reset(); err != nil {
+		t.Fatalf("failed to reset store: %v", err)
+	}
 	return store
 }
 
@@ -29,7 +31,9 @@ func TestAddContact(t *testing.T) {
 
 func TestSearchContact(t *testing.T) {
 	store := setupTest(t)
-	store.Add("Bob", "0987654321")
+	if err := store.Add("Bob", "0987654321"); err != nil {
+		t.Fatalf("failed to add contact: %v", err)
+	}
 
 	contact, err := store.Search("Bob")
 	if err != nil {
@@ -43,7 +47,9 @@ func TestSearchContact(t *testing.T) {
 
 func TestUpdateContact(t *testing.T) {
 	store := setupTest(t)
-	store.Add("Charlie", "111")
+	if err := store.Add("Charlie", "111"); err != nil {
+		t.Fatalf("failed to add contact: %v", err)
+	}
 	err := store.Update("Charlie", "222")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -56,7 +62,9 @@ func TestUpdateContact(t *testing.T) {
 
 func TestDeleteContact(t *testing.T) {
 	store := setupTest(t)
-	store.Add("Diana", "333")
+	if err := store.Add("Diana", "333"); err != nil {
+		t.Fatalf("failed to add contact: %v", err)
+	}
 	err := store.Delete("Diana")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
