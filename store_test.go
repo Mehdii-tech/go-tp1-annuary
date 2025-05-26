@@ -5,7 +5,7 @@ import (
 )
 
 func TestAddContact(t *testing.T) {
-	store := NewStore()
+	store := NewKVStore()
 	err := store.Add("Alice", "0123456789")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
@@ -17,7 +17,7 @@ func TestAddContact(t *testing.T) {
 }
 
 func TestSearchContact(t *testing.T) {
-	store := NewStore()
+	store := NewKVStore()
 	store.Add("Bob", "0987654321")
 
 	contact, err := store.Search("Bob")
@@ -31,7 +31,7 @@ func TestSearchContact(t *testing.T) {
 }
 
 func TestUpdateContact(t *testing.T) {
-	store := NewStore()
+	store := NewKVStore()
 	store.Add("Charlie", "111")
 	err := store.Update("Charlie", "222")
 	if err != nil {
@@ -44,7 +44,7 @@ func TestUpdateContact(t *testing.T) {
 }
 
 func TestDeleteContact(t *testing.T) {
-	store := NewStore()
+	store := NewKVStore()
 	store.Add("Diana", "333")
 	err := store.Delete("Diana")
 	if err != nil {

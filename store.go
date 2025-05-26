@@ -14,7 +14,7 @@ type ContactStore struct {
 	contacts map[string]Contact
 }
 
-func NewStore() *ContactStore {
+func NewKVStore() *ContactStore {
 	return &ContactStore{
 		contacts: make(map[string]Contact),
 	}
