@@ -4,20 +4,31 @@ import (
 	"testing"
 )
 
-func TestAddContact(t *testing.T) {
+func setupTest(t *testing.T) *ContactStore {
+	t.Helper()
 	store := NewKVStore()
+	store.Reset()
+	return store
+}
+
+func TestAddContact(t *testing.T) {
+	store := setupTest(t)
 	err := store.Add("Alice", "0123456789")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
 
-	if _, exists := store.contacts["Alice"]; !exists {
+	contact, err := store.Search("Alice")
+	if err != nil {
 		t.Errorf("expected contact Alice to exist")
+	}
+	if contact.Tel != "0123456789" {
+		t.Errorf("expected tel 0123456789, got %s", contact.Tel)
 	}
 }
 
 func TestSearchContact(t *testing.T) {
-	store := NewKVStore()
+	store := setupTest(t)
 	store.Add("Bob", "0987654321")
 
 	contact, err := store.Search("Bob")
@@ -31,7 +42,7 @@ func TestSearchContact(t *testing.T) {
 }
 
 func TestUpdateContact(t *testing.T) {
-	store := NewKVStore()
+	store := setupTest(t)
 	store.Add("Charlie", "111")
 	err := store.Update("Charlie", "222")
 	if err != nil {
@@ -44,7 +55,7 @@ func TestUpdateContact(t *testing.T) {
 }
 
 func TestDeleteContact(t *testing.T) {
-	store := NewKVStore()
+	store := setupTest(t)
 	store.Add("Diana", "333")
 	err := store.Delete("Diana")
 	if err != nil {
