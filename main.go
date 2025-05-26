@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/go-tp1-annuary/store"
 )
 
 func main() {
@@ -13,7 +15,7 @@ func main() {
 	phone := flag.String("phone", "", "Phone number")
 	flag.Parse()
 
-	kv := NewKVStore()
+	kv := store.NewKVStore()
 
 	switch *action {
 	case "add":
@@ -57,9 +59,16 @@ func main() {
 			fmt.Printf("%s -> %s\n", *name, phone)
 		}
 	case "list":
-		for name, phone := range kv.List() {
-			fmt.Printf("%s -> %s\n", name, phone)
+		for _, c := range kv.List() {
+			fmt.Println(c)
 		}
+	case "reset":
+		err := kv.Reset()
+		if err != nil {
+			fmt.Println("Error resetting contacts:", err)
+			return
+		}
+		fmt.Println("Contacts reset successfully.")
 	default:
 		fmt.Println("Unsupported action. Use: add, delete, update, search, list")
 		os.Exit(1)
