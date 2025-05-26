@@ -55,7 +55,7 @@ func (cs *ContactStore) save(contacts []Contact) error {
 		return err
 	}
 
-	if err := os.WriteFile(dataFile, data, 0644); err != nil {
+	if err := os.WriteFile(dataFile, data, 0600); err != nil {
 		fmt.Println("Error writing file:", err)
 		return err
 	}

@@ -1,0 +1,5 @@
+bin/
+coverage.txt
+*.test
+*.out
+store/contacts.json
